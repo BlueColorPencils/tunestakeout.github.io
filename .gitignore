@@ -13,7 +13,8 @@
 /tmp
 
 # ignore my secrets file
-/config/secrets.yml
+# jk.. don't ignore this
+# /config/secrets.yml
 
 # From https://github.com/github/gitignore/blob/master/Ruby.gitignore
 *.gem
@@ -29,7 +30,7 @@
 /tmp/
 
 # Used by dotenv library to load environment variables.
-# .env
+.env
 
 ## Specific to RubyMotion:
 .dat*
