@@ -13,7 +13,7 @@
 /tmp
 
 # ignore my secrets file
-./config/secrets.yml
+/config/secrets.yml
 
 # From https://github.com/github/gitignore/blob/master/Ruby.gitignore
 *.gem
