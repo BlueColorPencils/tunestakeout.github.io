@@ -33,6 +33,11 @@ body{
   width: 15px;
 }
 
+ul {
+  margin: 0px;
+  padding: 0px;
+}
+
 ul li {
   display: block;
 }
@@ -44,14 +49,16 @@ ul li a {
 }
 
 .container{
-  width: 100%;
-  overflow: auto;
+    width: 80%;
+    margin-left: 10%;
+    overflow: auto;
+    background-color: white;
 }
 
 .leftcontainer{
   float:left;
-  width: 400px;
-  margin-left: 15%;
+  width: 200px;
+  /*margin-left: 15%;*/
 }
 
 .rightcontainer{

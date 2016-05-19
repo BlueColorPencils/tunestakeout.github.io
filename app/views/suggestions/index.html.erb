@@ -8,4 +8,6 @@
   <%= submit_tag"Update", class: 'btn-btn-primary' %>
 <% end %>
 
-<%= @results%>
+<% unless @results[0] == "<" %>
+  <%= render partial: "suggestion" %>
+<% end %>

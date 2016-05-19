@@ -9,3 +9,46 @@ Includes name of the music item, linking to appropriate Spotify page
 Includes type of the music item (artist, album, track, or playlist)
 Includes photo/album cover of the music item
 Includes embedded Spotify player if appropriate (optional) -->
+<ul>
+<% @restaurants.each do |x| %>
+  <div class="container">
+
+  <div class = "leftcontainer">
+    <li><h2><%= link_to x.name, x.url %></h2></li>
+    <li><%= image_tag x.rating_img_url %></li>
+
+    <li>
+    <%= link_to x.url, class: 'product-thumbnail' do %>
+        <%= image_tag x.image_url, class: "img-responsive",  width: "100px" %>
+    <%end%>
+    </li>
+
+    <li><%= "#{x.display_phone}" %></li>
+    <li><%= "#{x.location.display_address.first}" %></li>
+    <br />
+    <% unless @music.empty? %>
+      <li><%= "Music Recommendations"  %></li>
+      <li><%= "#{@music[@counter].name}" %></li>
+      <li><%= "#{@music[@counter].popularity}" %></li>
+    <%end%>
+    <li>
+      <%= form_tag(favorite_path(@suggestions[@counter]["id"])) do %>
+        <div class="form-group">
+          <% hidden_field_tag "match_id", @suggestions[@counter]["id"] %>
+        </div>
+        <%= submit_tag "Add to favorites", class: 'btn-btn-primary' %>
+      <% end %>
+    </li>
+  </div>
+
+  <div class="rightcontainer">
+    <iframe src="https://embed.spotify.com/?uri=<%="#{@music[@counter].uri}"%>" width="300" height="300" frameborder="0" allowtransparency="true"></iframe>
+  </div>
+</div>
+
+  <% @counter += 1 %>
+  <br />
+  <br />
+<%end%>
+
+</ul>

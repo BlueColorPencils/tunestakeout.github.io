@@ -3,7 +3,20 @@ require "#{Rails.root}/lib/tunestakeoutwrapper.rb"
 class SuggestionsController < ApplicationController
   def index
   # index: shows top 20 suggestions, ranked by total number of favorites
-
+    @results = TunesTakeoutWrapper.top_twenty
+    unless @results[0] == "<"
+      @ids = @results["suggestions"]
+      @restaurants = []
+      @music = []
+      @suggestions =[]
+      @counter = 0
+      @ids.each do |x|
+        @list = TunesTakeoutWrapper.retrieve(x)["suggestion"]
+        @restaurants << Food.search(@list["food_id"].parameterize)
+        @music << Music.search(@list["music_type"], @list["music_id"])
+        @suggestions << @list
+      end
+    end
   end
 
   def show
@@ -21,7 +34,7 @@ class SuggestionsController < ApplicationController
     # "music_type"=>"track"}
     @restaurants = []
     @music = []
-    @counter = -1
+    @counter = -0
     @suggestions.each do |x|
       @restaurants << Food.search(x["food_id"].parameterize)
       @music << Music.search(x["music_type"], x["music_id"])
@@ -39,11 +52,24 @@ class SuggestionsController < ApplicationController
   end
 
   def add_favorite
-    @favorite = TunesTakeoutWrapper.post_favorites(current_user.uid, params[:match_id])
-    render :new_search
+    @favorite = TunesTakeoutWrapper.post_favorites(current_user.uid, params["format"])
+    redirect_to root_path
+    # render :new_search
   end
 
   def favorites
+    @favorites = TunesTakeoutWrapper.get_favorites(current_user.uid)
+    @ids = @favorites["suggestions"]
+    @restaurants = []
+    @music = []
+    @suggestions =[]
+    @counter = 0
+    @ids.each do |x|
+      @list = TunesTakeoutWrapper.retrieve(x)["suggestion"]
+      @restaurants << Food.search(@list["food_id"].parameterize)
+      @music << Music.search(@list["music_type"], @list["music_id"])
+      @suggestions << @list
+    end
   # favorites: shows all suggestions favorited by the signed-in User
   # favorite: adds a suggestion into the favorite list for the signed-in User. This requires interaction with the Tunes & Takeout API.
   end

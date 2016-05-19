@@ -13,31 +13,12 @@ module TunesTakeoutWrapper
     #"music_type
   end
 
-  def self.post_favorites(id, params)
-    # HTTParty.get(BASE_URL+"/users/#{user}/favorites").parsed_response
-
-    data = HTTParty.post(BASE_URL+"/users/#{id}/favorites", :body => { :suggestion => params}.to_json )
-
-
-
-
-    data =
-
-HTTParty.post(BASE_URL+"/users/#{id}/favorites", {:body => { :suggestions => params}.to_json})
-
-HTTParty.post(BASE_URL+"/users/#{id}/favorites", { :suggestions => params}.to_json)
-
+  def self.post_favorites(user, params)
+    data = HTTParty.post(BASE_URL+"/users/#{user}/favorites", {:body => { :suggestion => params}.to_json})
   end
 
   def self.retrieve(suggestion)
     data = HTTParty.get(BASE_URL+"/suggestions/#{suggestion}").parsed_response
-    #ex:/v1/suggestions/VzoikPLQUk2WS7xp
-    #:suggestion_id must be a valid ID returned from TunesAPI
-    # returns
-    # "id":"VzoikPLQUk2WS7xp",
-    # "food_id":"ohana-seattle-2",
-    # "music_id":"0BjkSCLEHlcsogSeDim01W",
-    # "music_type":
   end
 
   def self.top_twenty

@@ -13,10 +13,10 @@ Rails.application.routes.draw do
   root 'suggestions#index'
   get 'suggestions/' => 'suggestions#index', as: :search
   post 'suggestions/' => "suggestions#new_search"
-  post 'suggestions/add' => "suggestions#add_favorite"
+  post 'suggestions/add/' => "suggestions#add_favorite", as: :favorite
   delete "/logout" => "sessions#destroy"
   get "/auth/:provider/callback" => "sessions#create"
-  get '/profile' => 'sessions#profile', as: :profile
+  get '/profile' => 'suggestions#favorites', as: :profile
   resources :users,    :only => [:new, :create]
 
 
