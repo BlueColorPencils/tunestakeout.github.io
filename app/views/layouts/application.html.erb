@@ -8,7 +8,36 @@
 </head>
 <body>
 
-<%= yield %>
+  <main class="container">
+  <%= "Hi #{ current_user.name }!" if current_user %>
+  <nav class="navbar navbar-default">
+    <ul class="nav navbar-nav">
+      <li><%= link_to "Home", root_path %></li>
+
+
+      <% if current_user %>
+        <li><%= link_to "User", profile_path %></li>
+        <li><%= image_tag "#{current_user.image_url}", class: "nav-pics" %></li>
+        <li><%= link_to "Sign Out", logout_path, method: :delete %></li>
+      <%end%>
+
+
+      <% unless current_user %>
+        <li><%= "Guest"  %></li>
+        <li><%= image_tag "spotify.jpg", class: "nav-pics" %></li>
+        <li><%= link_to "Sign In", "auth/spotify" %></li>
+      <%end%>
+    </ul>
+  </nav>
+  <%= yield %>
+</main>
 
 </body>
 </html>
+
+<!-- On all pages, if not signed in:
+-Displays Guest and default Spotify artist logo
+-Displays link to sign-in page
+On all pages, if signed in:
+-Displays either my Spotify account name (uid), or real name (name), and my Spotify user avatar
+-Displays link to sign-out -->
