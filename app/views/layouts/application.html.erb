@@ -17,17 +17,19 @@
     <div class="navbar-brand">Nosh Ditty</div>
       <ul class="nav navbar-nav navbar-left">
         <li class="<%= "active" if current_page == '/' %>"><%= link_to "Home", root_path %></li>
-        <!-- <form class="navbar-form navbar-left" role="search"> -->
+
+        <% if current_user %>
           <li class="search">
-        <%= form_tag(controller: "suggestions", action: "new_search", method: "post") do %>
+          <%= form_tag(controller: "suggestions", action: "new_search", method: "post") do %>
             <div class=class="navbar-form navbar-left">
               <%= text_field_tag "query"%>
             </div>
           </li>
-          <li class="search">
-            <%= submit_tag"🔍", class: 'btn-btn-primary' %>
-          <% end %>
+            <li class="search">
+              <%= submit_tag"🔍", class: 'btn-btn-primary' %>
+            <% end %>
             </li>
+        <%end%>
         <!-- </form> -->
       </ul>
 
@@ -41,7 +43,7 @@
 
 
       <% unless current_user %>
-        <li><%= "Guest"  %></li>
+        <li class="hi-user"><%= "Guest"  %></li>
         <li><%= image_tag "spotify.jpg", class: "nav-pics" %></li>
         <li><%= link_to "Sign In", "auth/spotify" %></li>
       <%end%>

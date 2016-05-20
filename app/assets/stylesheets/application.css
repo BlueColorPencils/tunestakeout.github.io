@@ -21,21 +21,21 @@
 body{
   margin: 0;
   text-align: center;
-    background-image: url(cover.jpg);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    height: 100%;
-    color: black;
-    /*rgb(105, 185, 87)*/
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+  background-image: url(cover.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100%;
+  color: black;
+  /*rgb(105, 185, 87)*/
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
   /*top: 50px;*/
 }
 
 .nav-pics {
-  height: 50px;
+  height: 49px;
   margin-left: 10px;
 }
 
@@ -122,6 +122,7 @@ ul li a {
 
 .search{
   margin-top: 10px;
+  margin-left: 10px;
 }
 
 h2{

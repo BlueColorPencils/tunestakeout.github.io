@@ -1,6 +1,9 @@
 require "#{Rails.root}/lib/tunestakeoutwrapper.rb"
 
 class SuggestionsController < ApplicationController
+
+  skip_before_action :require_login, only: [:index, :loop_for_display, :user_check]
+
   def index
     user_check
 
