@@ -12,12 +12,6 @@ class SuggestionsController < ApplicationController
     end
   end
 
-  def show
-  end
-
-  def search
-  end
-
   def new_search
     user_check
 
@@ -53,6 +47,7 @@ class SuggestionsController < ApplicationController
     TunesTakeoutWrapper.delete_favorites(current_user.uid, params["format"])
     redirect_to root_path
   end
+
 
   private
   def loop_for_display(id)
