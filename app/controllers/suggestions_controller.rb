@@ -2,23 +2,13 @@ require "#{Rails.root}/lib/tunestakeoutwrapper.rb"
 
 class SuggestionsController < ApplicationController
   def index
-    unless current_user.nil?
-      @fave_hash = favorites
-    end
+    user_check
 
     @results = TunesTakeoutWrapper.top_twenty
+
     unless @results[0] == "<"
-      @ids = @results["suggestions"]
-      @restaurants = []
-      @music = []
-      @suggestions =[]
-      @counter = 0
-      @ids.each do |x|
-        @list = TunesTakeoutWrapper.retrieve(x)["suggestion"]
-        @restaurants << Food.search(@list["food_id"].parameterize)
-        @music << Music.search(@list["music_type"], @list["music_id"])
-        @suggestions << @list
-      end
+      id = @results["suggestions"]
+      loop_for_display(id)
     end
   end
 
@@ -29,18 +19,12 @@ class SuggestionsController < ApplicationController
   end
 
   def new_search
-
-    unless current_user.nil?
-      @fave_hash = favorites
-    end
+    user_check
 
     @search = params[:query].downcase
-    @results = TunesTakeoutWrapper.find(params[:query])
+    @results = TunesTakeoutWrapper.find(@search)
     @suggestions = @results["suggestions"]
-    # "id"=>"VzoWWvqqbQADSoRX",
-    # "food_id"=>"ohana-seattle-2",
-    # "music_id"=>"0BjkSCLEHlcsogSeDim01W",
-    # "music_type"=>"track"}
+
     @restaurants = []
     @music = []
     @counter = 0
@@ -48,44 +32,26 @@ class SuggestionsController < ApplicationController
       @restaurants << Food.search(x["food_id"].parameterize)
       @music << Music.search(x["music_type"], x["music_id"])
     end
-    # for @music
-      # album
-        # name  =  .name
-        # type   = .album_type
-        # images = .images[1]["url"]
-      # Artist
+  end
 
-      #track
 
+  def favorites
+    @favorites = TunesTakeoutWrapper.get_favorites(current_user.uid)
+    id = @favorites["suggestions"]
+
+    loop_for_display(id)
+
+    @fave_hash = @ids.map{ |x| [x, true] }.to_h
   end
 
   def add_favorite
     @favorite = TunesTakeoutWrapper.post_favorites(current_user.uid, params["format"])
     redirect_to root_path
-    # render :new_search
   end
 
-  def favorites
-    @favorites = TunesTakeoutWrapper.get_favorites(current_user.uid)
-    @ids = @favorites["suggestions"]
-    @restaurants = []
-    @music = []
-    @suggestions =[]
-    @counter = 0
-    @ids.each do |x|
-      @list = TunesTakeoutWrapper.retrieve(x)["suggestion"]
-      @restaurants << Food.search(@list["food_id"].parameterize)
-      @music << Music.search(@list["music_type"], @list["music_id"])
-      @suggestions << @list
-    end
-
-  @fave_hash = @ids.map{ |x| [x, true] }.to_h
-  # favorites: shows all suggestions favorited by the signed-in User
-  # favorite: adds a suggestion into the favorite list for the signed-in User. This requires interaction with the Tunes & Takeout API.
-  end
-
-  def unfavorite
-  # unfavorite: removes a suggestion from the favorite list for the signed-in User. This requires interaction with the Tunes & Takeout API.
+  def destroy
+    TunesTakeoutWrapper.delete_favorites(current_user.uid, params["format"])
+    redirect_to root_path
   end
 
   private
@@ -100,6 +66,12 @@ class SuggestionsController < ApplicationController
       @restaurants << Food.search(@list["food_id"].parameterize)
       @music << Music.search(@list["music_type"], @list["music_id"])
       @suggestions << @list
+    end
+  end
+
+  def user_check
+    unless current_user.nil?
+      @fave_hash = favorites
     end
   end
 end

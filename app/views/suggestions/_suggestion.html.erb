@@ -35,7 +35,7 @@ Includes embedded Spotify player if appropriate (optional) -->
     <% unless current_user.nil? %>
       <% if @fave_hash[@suggestions[@counter]["id"]] == true %>
         <li>
-          <%= form_tag(favorite_path(@suggestions[@counter]["id"])) do %>
+          <%= form_tag(unfavorite_path(@suggestions[@counter]["id"]), method: :delete) do %>
           <div class="form-group">
             <% hidden_field_tag "match_id", @suggestions[@counter]["id"] %>
           </div>

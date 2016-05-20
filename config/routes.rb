@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get 'suggestions/' => 'suggestions#index', as: :search
   post 'suggestions/' => "suggestions#new_search"
   post 'suggestions/add/' => "suggestions#add_favorite", as: :favorite
+  delete 'suggestions/delete/' => "suggestions#destroy", as: :unfavorite
   delete "/logout" => "sessions#destroy"
   get "/auth/:provider/callback" => "sessions#create"
   get '/profile' => 'suggestions#favorites', as: :profile
