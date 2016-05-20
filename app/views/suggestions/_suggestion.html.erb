@@ -14,7 +14,7 @@ Includes embedded Spotify player if appropriate (optional) -->
   <div class="container">
 
   <div class = "leftcontainer">
-    <li><h2><%= link_to x.name, x.url %></h2></li>
+    <li><h3><%= link_to x.name, x.url %></h3></li>
     <li><%= image_tag x.rating_img_url %></li>
 
     <li>
@@ -29,16 +29,30 @@ Includes embedded Spotify player if appropriate (optional) -->
     <% unless @music.empty? %>
       <li><%= "Music Recommendations"  %></li>
       <li><%= "#{@music[@counter].name}" %></li>
-      <li><%= "#{@music[@counter].popularity}" %></li>
+      <!-- <li><%= "#{@music[@counter].popularity}" %></li> -->
     <%end%>
-    <li>
-      <%= form_tag(favorite_path(@suggestions[@counter]["id"])) do %>
-        <div class="form-group">
-          <% hidden_field_tag "match_id", @suggestions[@counter]["id"] %>
-        </div>
-        <%= submit_tag "Add to favorites", class: 'btn-btn-primary' %>
+
+    <% unless current_user.nil? %>
+      <% if @fave_hash[@suggestions[@counter]["id"]] == true %>
+        <li>
+          <%= form_tag(favorite_path(@suggestions[@counter]["id"])) do %>
+          <div class="form-group">
+            <% hidden_field_tag "match_id", @suggestions[@counter]["id"] %>
+          </div>
+          <%= submit_tag "Unfavorite", class: 'btn btn-danger' %>
+          <% end %>
+        </li>
+      <% else %>
+        <li>
+          <%= form_tag(favorite_path(@suggestions[@counter]["id"])) do %>
+          <div class="form-group">
+            <% hidden_field_tag "match_id", @suggestions[@counter]["id"] %>
+          </div>
+          <%= submit_tag "Favorite", class: 'btn btn-success' %>
+          <% end %>
+        </li>
       <% end %>
-    </li>
+    <% end %>
   </div>
 
   <div class="rightcontainer">

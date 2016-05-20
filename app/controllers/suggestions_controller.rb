@@ -2,7 +2,10 @@ require "#{Rails.root}/lib/tunestakeoutwrapper.rb"
 
 class SuggestionsController < ApplicationController
   def index
-  # index: shows top 20 suggestions, ranked by total number of favorites
+    unless current_user.nil?
+      @fave_hash = favorites
+    end
+
     @results = TunesTakeoutWrapper.top_twenty
     unless @results[0] == "<"
       @ids = @results["suggestions"]
@@ -26,6 +29,12 @@ class SuggestionsController < ApplicationController
   end
 
   def new_search
+
+    unless current_user.nil?
+      @fave_hash = favorites
+    end
+
+    @search = params[:query].downcase
     @results = TunesTakeoutWrapper.find(params[:query])
     @suggestions = @results["suggestions"]
     # "id"=>"VzoWWvqqbQADSoRX",
@@ -34,12 +43,11 @@ class SuggestionsController < ApplicationController
     # "music_type"=>"track"}
     @restaurants = []
     @music = []
-    @counter = -0
+    @counter = 0
     @suggestions.each do |x|
       @restaurants << Food.search(x["food_id"].parameterize)
       @music << Music.search(x["music_type"], x["music_id"])
     end
-
     # for @music
       # album
         # name  =  .name
@@ -70,11 +78,28 @@ class SuggestionsController < ApplicationController
       @music << Music.search(@list["music_type"], @list["music_id"])
       @suggestions << @list
     end
+
+  @fave_hash = @ids.map{ |x| [x, true] }.to_h
   # favorites: shows all suggestions favorited by the signed-in User
   # favorite: adds a suggestion into the favorite list for the signed-in User. This requires interaction with the Tunes & Takeout API.
   end
 
   def unfavorite
   # unfavorite: removes a suggestion from the favorite list for the signed-in User. This requires interaction with the Tunes & Takeout API.
+  end
+
+  private
+  def loop_for_display(id)
+    @ids = id
+    @restaurants = []
+    @music = []
+    @suggestions =[]
+    @counter = 0
+    @ids.each do |x|
+      @list = TunesTakeoutWrapper.retrieve(x)["suggestion"]
+      @restaurants << Food.search(@list["food_id"].parameterize)
+      @music << Music.search(@list["music_type"], @list["music_id"])
+      @suggestions << @list
+    end
   end
 end

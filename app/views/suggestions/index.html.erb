@@ -1,13 +1,5 @@
 <!-- Displays _suggestion partials for the top 20 suggestions ranked by number of favorites -->
-
-<h2>Search for food:</h2>
-<%= form_tag(controller: "suggestions", action: "new_search", method: "post") do %>
-  <div class="form-group">
-    <%= text_field_tag "query"%>
-  </div>
-  <%= submit_tag"Update", class: 'btn-btn-primary' %>
-<% end %>
-
+<h2><%= "Top 20 Nosh Ditties in Seattle, WA" %> </h2>
 <% unless @results[0] == "<" %>
   <%= render partial: "suggestion" %>
 <% end %>
