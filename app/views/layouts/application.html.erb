@@ -37,7 +37,10 @@
       <% if current_user %>
         <li class="hi-user"><%=  "Hi #{ current_user.name }!" if current_user %> </li>
         <li><%= image_tag "#{current_user.image_url}", class: "nav-pics" %></li>
-        <li class="<%= "active" if current_page == '/profile' %>"><%= link_to "Profile", profile_path %></li>
+        <li><%= link_to "Profile", "        https://open.spotify.com/user/#{current_user.uid}" %></li>
+        <li class="<%= "active" if current_page == '/profile' %>"><%= link_to "Favorites", profile_path %></li>
+
+
         <li><%= link_to "Sign Out", logout_path, method: :delete %></li>
       <%end%>
 

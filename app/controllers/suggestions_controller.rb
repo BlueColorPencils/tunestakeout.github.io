@@ -6,7 +6,6 @@ class SuggestionsController < ApplicationController
 
   def index
     user_check
-
     @results = TunesTakeoutWrapper.top_twenty
 
     unless @results[0] == "<"

@@ -40,6 +40,10 @@ group :development, :test do
   gem 'byebug'
   gem 'dotenv-rails'
   gem 'simplecov', '~> 0.11.2'
+  gem 'minitest-vcr'
+  gem 'minitest-reporters'
+  gem 'webmock'
+
 end
 
 group :development do
